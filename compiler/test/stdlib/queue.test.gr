@@ -52,6 +52,7 @@ Queue.push(0, queue)
 let queue2 = Queue.makeSized(1)
 Queue.push(0, queue2)
 assert queue == queue2
+assert Queue.equal(queue, queue2)
 
 // test that the "circular" behavior of the circular queue works as expected
 let queue = Queue.makeSized(4)
@@ -79,6 +80,10 @@ assert Queue.size(queue) == 4
 assert Queue.peek(queue) == Some(6)
 
 Queue.push(10, queue)
+
+// copying for next test
+let queue_copy = Queue.copy(queue)
+
 assert Queue.size(queue) == 5
 assert Queue.pop(queue) == Some(6)
 assert Queue.pop(queue) == Some(7)
@@ -86,6 +91,24 @@ assert Queue.pop(queue) == Some(8)
 assert Queue.pop(queue) == Some(9)
 assert Queue.pop(queue) == Some(10)
 assert Queue.pop(queue) == None
+
+// test that the "circular" behavior of the circular queue works as expected
+let queue2 = Queue.makeSized(5)
+let push = x => () => Queue.push(x, queue2)
+let actions = [
+  push(6),
+  push(7),
+  push(8),
+  push(9),
+  push(10),
+]
+List.forEach(action => action(), actions)
+assert Queue.equal(queue_copy, queue2)
+assert queue_copy != queue2
+
+Queue.push(15, queue2)
+assert !Queue.equal(queue_copy, queue2)
+assert queue_copy != queue2
 
 module Immutable {
   from Queue use { module Immutable as Queue }

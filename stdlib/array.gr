@@ -140,6 +140,16 @@ provide let init: (Number, Number => a) => Array<a> =
 }
 
 /**
+   * An empty array.
+   *
+   * @since v0.6.0
+   */
+
+provide let empty = {
+  init(0, x => x)
+}
+
+/**
  * An alias for normal syntactic array access, i.e. `array[n]`.
  *
  * Retrieves the element from the array at the specified index.
